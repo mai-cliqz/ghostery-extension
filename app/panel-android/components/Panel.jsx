@@ -1,6 +1,7 @@
 import React from 'react';
-import TrackersChart from './TrackersChart';
 import { Tabs, Tab } from './Tabs';
+import TrackersChart from './TrackersChart';
+import Accordions from './Accordions';
 
 export default class Panel extends React.Component {
 	constructor(props) {
@@ -30,12 +31,17 @@ export default class Panel extends React.Component {
 					panel: data.data.panel,
 					blocking: data.data.blocking,
 				});
+
+				console.log('@@@@', this.state);
 			});
 	}
 
 	fromTrackersToChartData(trackers) {
 		if (trackers.length < 1) {
-			return [];
+			return {
+				sum: 0,
+				arcs: [],
+			};
 		}
 
 		const arcs = [];
@@ -55,11 +61,18 @@ export default class Panel extends React.Component {
 			startAngle = endAngle;
 		}
 
-		return arcs;
+		return {
+			sum,
+			arcs,
+		};
 	}
 
-	get paths() {
-		const trackers = (this.state.summary.categories || []).map(category =>
+	get categories() {
+		return this.state.summary.categories || [];
+	}
+
+	get chartData() {
+		const trackers = this.categories.map(category =>
 			({
 				id: category.id,
 				numTotal: category.num_total,
@@ -69,8 +82,12 @@ export default class Panel extends React.Component {
 		return this.fromTrackersToChartData(trackers);
 	}
 
-	get num() {
-		return 22;
+	get hostName() {
+		return this.state.summary.pageHost || '';
+	}
+
+	get nTrackersBlocked() {
+		return (this.state.summary.trackerCounts || {}).blocked || 0;
 	}
 
 	render() {
@@ -79,13 +96,37 @@ export default class Panel extends React.Component {
 				<Tabs>
 	        <Tab tabLabel={'Overview'}
 	             linkClassName={'custom-link'}>
-	          <TrackersChart paths={this.paths} radius={this.state.config.radius} num={this.num} />
-	          <p>hello</p>
+	          <TrackersChart
+	          	paths={this.chartData.arcs}
+	          	radius={this.state.config.radius}
+	          	num={this.chartData.sum}
+	          />
+	          <p>{this.hostName}</p>
+	          <p>{this.nTrackersBlocked} Trackers blocked</p>
+
+	          <button
+        			className="button"
+        			style={{ marginRight: '5px' }}
+        			onClick={this.props.handleClick}
+        		>Trust Site</button>
+        		<button
+        			className="button"
+        			style={{ marginRight: '5px' }}
+        			onClick={this.props.handleClick}
+        		>Restrict Site</button>
+        		<button
+        			className="button"
+        			style={{ marginRight: '5px' }}
+        			onClick={this.props.handleClick}
+        		>Pause Ghostery</button>
 	        </Tab>
+
 	        <Tab tabLabel={'Site Trackers'}
 	             linkClassName={'custom-link'}>
+	          <Accordions accordions={this.categories} />
 	          <p>tab 2 content</p>
 	        </Tab>
+
 	        <Tab tabLabel={'Global Trackers'}
 	             linkClassName={'custom-link'}>
 	          <p>tab 3 content</p>
