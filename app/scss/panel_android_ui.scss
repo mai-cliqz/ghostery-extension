@@ -1,0 +1,22 @@
+#ghostery-content {
+	background-color: #ccc;
+	height: 200px;
+	width: 200px;
+}
+
+.path {
+  cursor: pointer;
+  stroke-dashoffset: 0;
+  stroke-dasharray: var(--stroke-length);
+  animation: dash calc(var(--stroke-length) * 1ms) linear alternate 1;
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: var(--stroke-length);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
