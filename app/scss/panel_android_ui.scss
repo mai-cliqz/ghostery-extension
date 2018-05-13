@@ -1,15 +1,4 @@
-#ghostery-content {
-	background-color: #ccc;
-	height: 200px;
-	width: 200px;
-}
-
-.path {
-  cursor: pointer;
-  stroke-dashoffset: 0;
-  stroke-dasharray: var(--stroke-length);
-  animation: dash calc(var(--stroke-length) * 1ms) linear alternate 1;
-}
+@import 'android/tabs';
 
 @keyframes dash {
   from {
@@ -20,3 +9,47 @@
   }
 }
 
+.path {
+  cursor: pointer;
+  stroke-dashoffset: 0;
+  stroke-dasharray: var(--stroke-length);
+  animation: dash calc(var(--stroke-length) * 1ms) linear alternate 1;
+
+  &[data-category='advertising'] {
+  	stroke: red;
+  }
+
+  &[data-category='customer_interaction'] {
+  	stroke: yellow;
+  }
+
+  &[data-category='site_analytics'] {
+  	stroke: green;
+  }
+
+  &[data-category='other'] {
+  	stroke: blue;
+  }
+}
+
+#ghostery-content {
+	background-color: #ccc;
+
+	.trackers-chart {
+		display: inline-block;
+		width: 200px;
+		max-width: 100%;
+		position: relative;
+
+		.trackers-num {
+			position: absolute;
+  		top: 50%;
+  		left: 50%;
+		  /* TODO: @mai prefixes */
+		  transform: translate(-50%, -50%);
+		  font-size: 20px;
+		  font-weight: 600;
+		  text-align: center;
+		}
+	}
+}

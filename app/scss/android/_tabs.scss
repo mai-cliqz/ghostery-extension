@@ -1,0 +1,33 @@
+.tabs-wrapper {
+	ul.tabs-nav {
+		margin: 0px;
+		padding: 0px;
+		list-style: none;
+		display: flex;
+	  	flex-wrap: wrap;
+	  	background-color: #00AEF0;
+
+	  	li.tab-item {
+			display: inline-block;
+			flex-grow: 1;
+
+		  	a.tab-link.custom-link {
+				display: block;
+				padding: 5px 10px;
+				text-align: left;
+				cursor: pointer;
+				text-transform: uppercase;
+				color: #fff;
+
+				&.active {
+					border-bottom: 2px solid #fff;
+					font-weight: 500;
+				}
+			}
+		}
+	}
+
+	.tabs-active-content {
+		text-align: center;
+	}
+}
