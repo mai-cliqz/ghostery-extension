@@ -1,56 +1,83 @@
+@import 'android/mixins';
 @import 'android/tabs';
 @import 'android/accordions';
-
-@keyframes dash {
-  from {
-    stroke-dashoffset: var(--stroke-length);
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.path {
-  cursor: pointer;
-  stroke-dashoffset: 0;
-  stroke-dasharray: var(--stroke-length);
-  animation: dash calc(var(--stroke-length) * 1ms) linear alternate 1;
-
-  &[data-category='advertising'] {
-  	stroke: red;
-  }
-
-  &[data-category='customer_interaction'] {
-  	stroke: yellow;
-  }
-
-  &[data-category='site_analytics'] {
-  	stroke: green;
-  }
-
-  &[data-category='other'] {
-  	stroke: blue;
-  }
-}
 
 #ghostery-content {
 	background-color: #ccc;
 
 	.trackers-chart {
 		display: inline-block;
-		width: 200px;
+		width: 120px;
 		max-width: 100%;
 		position: relative;
+
+		#circle {
+			& > g {
+				fill: none;
+		    stroke-width: 28;
+		     @include prefix('transform', 'translate(100px, 100px)');
+
+		     .path {
+					  stroke-dashoffset: 0;
+					  stroke-dasharray: var(--stroke-length);
+					   @include prefix('animation', 'dash calc(var(--stroke-length) * 1ms) linear alternate 1');
+
+					  &[data-category='advertising'] {
+					  	stroke: #cb55cd;
+					  }
+
+					  &[data-category='audio_video_player'] {
+					  	stroke: #ef671e;
+					  }
+
+					  &[data-category='comments'] {
+					  	stroke: #43b7c5;
+					  }
+
+					  &[data-category='customer_interaction'] {
+					  	stroke: #fdc257;
+					  }
+
+					  &[data-category='essential'] {
+					  	stroke: #fc9734;
+					  }
+
+					  &[data-category='pornvertising'] {
+					  	stroke: #ecafc2;
+					  }
+
+					  &[data-category='site_analytics'] {
+					  	stroke: #87d7ef;
+					  }
+
+					  &[data-category='social_media'] {
+					  	stroke: #388ee8;
+					  }
+
+					  &[data-category='default'] {
+					  	stroke: #e8e8e8;
+					  }
+					}
+			}
+		}
 
 		.trackers-num {
 			position: absolute;
   		top: 50%;
   		left: 50%;
-		  /* TODO: @mai prefixes */
-		  transform: translate(-50%, -50%);
-		  font-size: 20px;
-		  font-weight: 600;
+		  @include prefix('transform', 'translate(-50%, -50%)');
 		  text-align: center;
+
+		  & > span {
+		  	&:first-child {
+		  		font-size: 24px;
+		  		font-weight: 600;
+		  	}
+
+		  	&:last-child {
+		  		font-size: 11px;
+		  	}
+		  }
 		}
 	}
 }

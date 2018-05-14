@@ -1,7 +1,8 @@
 import React from 'react';
-import { Tabs, Tab } from './Tabs';
-import TrackersChart from './TrackersChart';
-import Accordions from './Accordions';
+import { Tabs, Tab } from './utils/Tabs';
+import Overview from './Overview';
+import SiteTrackers from './SiteTrackers';
+import GlobalTrackers from './GlobalTrackers';
 
 export default class Panel extends React.Component {
 	constructor(props) {
@@ -10,9 +11,6 @@ export default class Panel extends React.Component {
     	summary: {},
     	panel: {},
     	blocking: {},
-    	config: {
-    		radius: 100,
-    	}
     }
 
     this.getPanelData = this.getPanelData.bind(this);
@@ -36,58 +34,8 @@ export default class Panel extends React.Component {
 			});
 	}
 
-	fromTrackersToChartData(trackers) {
-		if (trackers.length < 1) {
-			return {
-				sum: 0,
-				arcs: [],
-			};
-		}
-
-		const arcs = [];
-		let startAngle = 0;
-
-		var sum = trackers.map(tracker => tracker.numTotal).reduce((a, b) => a + b, 0);
-
-		for (let i = 0; i < trackers.length; i += 1) {
-			const endAngle = startAngle + (trackers[i].numTotal * 360  / sum);
-
-			arcs.push({
-				start: startAngle,
-				end: endAngle,
-				category: trackers[i].id,
-			})
-
-			startAngle = endAngle;
-		}
-
-		return {
-			sum,
-			arcs,
-		};
-	}
-
 	get categories() {
 		return this.state.summary.categories || [];
-	}
-
-	get chartData() {
-		const trackers = this.categories.map(category =>
-			({
-				id: category.id,
-				numTotal: category.num_total,
-			})
-		);
-
-		return this.fromTrackersToChartData(trackers);
-	}
-
-	get hostName() {
-		return this.state.summary.pageHost || '';
-	}
-
-	get nTrackersBlocked() {
-		return (this.state.summary.trackerCounts || {}).blocked || 0;
 	}
 
 	render() {
@@ -96,34 +44,13 @@ export default class Panel extends React.Component {
 				<Tabs>
 	        <Tab tabLabel={'Overview'}
 	             linkClassName={'custom-link'}>
-	          <TrackersChart
-	          	paths={this.chartData.arcs}
-	          	radius={this.state.config.radius}
-	          	num={this.chartData.sum}
-	          />
-	          <p>{this.hostName}</p>
-	          <p>{this.nTrackersBlocked} Trackers blocked</p>
-
-	          <button
-        			className="button"
-        			style={{ marginRight: '5px' }}
-        			onClick={this.props.handleClick}
-        		>Trust Site</button>
-        		<button
-        			className="button"
-        			style={{ marginRight: '5px' }}
-        			onClick={this.props.handleClick}
-        		>Restrict Site</button>
-        		<button
-        			className="button"
-        			style={{ marginRight: '5px' }}
-        			onClick={this.props.handleClick}
-        		>Pause Ghostery</button>
+	          <Overview summary={this.state.summary} />
+	          <p>tab 1 content</p>
 	        </Tab>
 
 	        <Tab tabLabel={'Site Trackers'}
 	             linkClassName={'custom-link'}>
-	          <Accordions accordions={this.categories} />
+	          <SiteTrackers categories={this.categories} />
 	          <p>tab 2 content</p>
 	        </Tab>
 

@@ -88,8 +88,8 @@ class SVG extends React.Component {
 		});
 
 		return (
-			<svg id="circle" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" viewBox="-10 -10 220 220">
-			  <g fill="none" strokeWidth="15" transform="translate(100,100)">
+			<svg id="circle" xmlns="http://www.w3.org/2000/svg" version="1.1" width="100%" height="100%" viewBox="-20 -20 240 240">
+			  <g>
 			    {paths}
 			  </g>
 			</svg>
@@ -107,7 +107,7 @@ class TrackersChart extends React.Component {
 			<div className="trackers-chart">
 		    <SVG paths={this.props.paths} radius={this.props.radius} />
 		    <p className="trackers-num">
-					{this.props.num} Trackers found
+					<span>{this.props.num}</span> <span>Trackers found</span>
 				</p>
 		  </div>
 		);

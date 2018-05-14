@@ -8,7 +8,7 @@ class Accordion extends React.Component {
   }
 
   toggleContent() {
-    this.props.toggleAccordion(this.props['data-id']);
+    this.props.toggleAccordion(this.props.index);
   }
 
   getHeight() {
@@ -22,7 +22,7 @@ class Accordion extends React.Component {
   render() {
     const style = { height: this.getHeight() };
     return (
-      <div className={"accordion accordion" + this.props['data-id']}>
+      <div className={"accordion accordion" + this.props.index}>
         <h2 className="accordionTitle" onClick={this.toggleContent}>{this.props.data.name}</h2>
         <div className="accordionContent" style={style} >
         	{this.props.data.trackers.map((tracker, index) =>
@@ -33,6 +33,12 @@ class Accordion extends React.Component {
     );
   }
 }
+
+Accordion.propTypes = {
+	toggleAccordion: PropTypes.func,
+	open: PropTypes.bool,
+	data: PropTypes.object,
+};
 
 class Accordions extends React.Component {
 	constructor(props) {
@@ -64,7 +70,7 @@ class Accordions extends React.Component {
         	this.props.accordions.map((accordion, index) =>
 			      <Accordion
 			      	key={index}
-			      	data-id={index}
+			      	index={index}
 			      	data={accordion}
 			      	toggleAccordion={this.toggleAccordion}
 			      	open={this.getOpenStatus(index)}
