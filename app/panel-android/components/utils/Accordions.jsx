@@ -119,21 +119,18 @@ class Accordions extends React.Component {
 
   render() {
     return (
-    	<div>
-	    	<h2>Trackers on this site</h2>
-	      <div className="accordions">
-	        {
-	        	this.props.accordions.map((accordion, index) =>
-				      <Accordion
-				      	key={index}
-				      	index={index}
-				      	data={accordion}
-				      	toggleAccordion={this.toggleAccordion}
-				      	open={this.getOpenStatus(index)}
-				      />
-				    )
-	        }
-	      </div>
+      <div className="accordions">
+        {
+        	this.props.accordions.map((accordion, index) =>
+			      <Accordion
+			      	key={index}
+			      	index={index}
+			      	data={accordion}
+			      	toggleAccordion={this.toggleAccordion}
+			      	open={this.getOpenStatus(index)}
+			      />
+			    )
+        }
       </div>
     );
   }

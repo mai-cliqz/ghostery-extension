@@ -56,6 +56,7 @@ export default class Panel extends React.Component {
 
 	        <Tab tabLabel={'Global Trackers'}
 	             linkClassName={'custom-link'}>
+	          <GlobalTrackers categories={this.categories} />
 	          <p>tab 3 content</p>
 	        </Tab>
 	      </Tabs>

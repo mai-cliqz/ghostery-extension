@@ -39,7 +39,7 @@ export class Tabs extends React.Component {
 		super(props);
 
 		this.state = {
-			activeTabIndex: 1
+			activeTabIndex: 0
 		};
 
 		this.handleTabClick = this.handleTabClick.bind(this);

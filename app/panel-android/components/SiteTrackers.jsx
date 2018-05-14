@@ -1,14 +1,17 @@
 import React from 'react';
 import Accordions from './utils/Accordions';
 
-export default class Overview extends React.Component {
+export default class SiteTrackers extends React.Component {
 	get categories() {
 		return this.props.categories;
 	}
 
 	render() {
 		return (
-			<Accordions accordions={this.categories} />
+			<div className="site-trackers">
+				<h2>Trackers on this site</h2>
+				<Accordions accordions={this.categories} />
+			</div>
 		)
 	}
 }

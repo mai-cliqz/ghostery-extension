@@ -1,5 +1,6 @@
 import React from 'react';
 import TrackersChart from './utils/TrackersChart';
+import FixedMenu from './utils/FixedMenu';
 
 export default class Overview extends React.Component {
 	constructor(props) {
@@ -72,7 +73,7 @@ export default class Overview extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div className="overview">
 				<TrackersChart
 	      	paths={this.chartData.arcs}
 	      	radius={this.state.config.radius}
@@ -96,6 +97,8 @@ export default class Overview extends React.Component {
 	  			style={{ marginRight: '5px' }}
 	  			onClick={this.props.handleClick}
 	  		>Pause Ghostery</button>
+
+	  		<FixedMenu />
   		</div>
 		)
 	}
