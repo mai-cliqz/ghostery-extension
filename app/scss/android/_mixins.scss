@@ -6,7 +6,7 @@
 
 @keyframes dash {
   from {
-    stroke-dashoffset: var(--stroke-length);
+    stroke-dashoffset: var(--stroke-length, 0);
   }
   to {
     stroke-dashoffset: 0;

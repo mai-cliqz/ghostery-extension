@@ -1,3 +1,4 @@
+@import 'android/normalize';
 @import 'android/mixins';
 @import 'android/tabs';
 @import 'android/accordions';
@@ -19,8 +20,8 @@
 
 		     .path {
 					  stroke-dashoffset: 0;
-					  stroke-dasharray: var(--stroke-length);
-					   @include prefix('animation', 'dash calc(var(--stroke-length) * 1ms) linear alternate 1');
+					  stroke-dasharray: var(--stroke-length, 0);
+					   @include prefix('animation', 'dash calc(var(--stroke-length, 0) * 1ms) linear alternate 1');
 
 					  &[data-category='advertising'] {
 					  	stroke: #cb55cd;
