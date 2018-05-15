@@ -36,9 +36,9 @@ class MenuItem extends React.Component {
 	render() {
 
 		return (
-			<div>
-				<div onClick={this.menuItemClicked}>Menu Item</div>
-				<span onClick={this.switcherClicked} className={`switcher ${this.state.active ? 'active' : ''}`}>ON/OFF</span>
+			<div className="menuItemWrapper">
+				<div onClick={this.menuItemClicked} className="menuItemOverview">Menu Item</div>
+				<span onClick={this.switcherClicked} className={`switcher ${this.state.active ? 'active' : ''}`}></span>
 				<div className={`menuItemContent ${this.state.opening ? 'opening' : ''}`}>
 					<span>Some information</span>
 					<button onClick={this.closeButtonClicked} className="close">Close</button>
