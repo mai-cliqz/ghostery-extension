@@ -5,22 +5,31 @@ class MenuItem extends React.Component {
 		super(props);
 
 		this.state = {
-			active: false,
+			active: true,
+			opening: false,
 		};
 
 		this.menuItemClicked = this.menuItemClicked.bind(this);
 		this.closeButtonClicked = this.closeButtonClicked.bind(this);
+		this.switcherClicked = this.switcherClicked.bind(this);
 	}
 
 	menuItemClicked() {
 		this.setState({
-			active: true,
+			opening: true,
 		});
 	}
 
 	closeButtonClicked() {
 		this.setState({
-			active: false,
+			opening: false,
+		});
+	}
+
+	switcherClicked() {
+		const currentState = this.state.active;
+		this.setState({
+			active: !currentState,
 		});
 	}
 
@@ -28,8 +37,9 @@ class MenuItem extends React.Component {
 
 		return (
 			<div>
-				<span onClick={this.menuItemClicked}>Menu Item</span>
-				<div className={`menuItemInfo ${this.state.active ? 'active' : ''}`}>
+				<div onClick={this.menuItemClicked}>Menu Item</div>
+				<span onClick={this.switcherClicked} className={`switcher ${this.state.active ? 'active' : ''}`}>ON/OFF</span>
+				<div className={`menuItemContent ${this.state.opening ? 'opening' : ''}`}>
 					<span>Some information</span>
 					<button onClick={this.closeButtonClicked} className="close">Close</button>
 				</div>
