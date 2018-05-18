@@ -61,11 +61,9 @@ class SVG extends React.Component {
 		this.state = {
 			nItem: 1,
 		}
-
-		this.increaseN = this.increaseN.bind(this);
 	}
 
-	increaseN() {
+	increaseN = () => {
 		let currentN = this.state.nItem;
 		if (currentN < this.props.paths.length) {
 			this.setState({

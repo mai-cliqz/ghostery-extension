@@ -8,25 +8,21 @@ class MenuItem extends React.Component {
 			active: true,
 			opening: false,
 		};
-
-		this.menuItemClicked = this.menuItemClicked.bind(this);
-		this.closeButtonClicked = this.closeButtonClicked.bind(this);
-		this.switcherClicked = this.switcherClicked.bind(this);
 	}
 
-	menuItemClicked() {
+	menuItemClicked = () => {
 		this.setState({
 			opening: true,
 		});
 	}
 
-	closeButtonClicked() {
+	closeButtonClicked = () => {
 		this.setState({
 			opening: false,
 		});
 	}
 
-	switcherClicked() {
+	switcherClicked = () => {
 		const currentState = this.state.active;
 		this.setState({
 			active: !currentState,
@@ -54,11 +50,9 @@ export default class FixedMenu extends React.Component {
 		this.state = {
 			open: false
 		}
-
-		this.toggleMenu = this.toggleMenu.bind(this);
 	}
 
-	toggleMenu() {
+	toggleMenu = () => {
 		const currentState = this.state.open;
 		this.setState({
 			open: !currentState,

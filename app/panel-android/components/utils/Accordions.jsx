@@ -8,11 +8,9 @@ class TrackerItem extends React.Component {
     this.state = {
     	showMenu: false,
     };
-
-    this.toggleMenu = this.toggleMenu.bind(this);
   }
 
-	toggleMenu() {
+	toggleMenu = () => {
 		const currentState = this.state.showMenu;
 		this.setState({
 			showMenu: !currentState,
@@ -40,13 +38,14 @@ class Accordion extends React.Component {
 	constructor(props) {
     super(props);
     this.myRef = React.createRef();
-    this.toggleContent = this.toggleContent.bind(this);
+
     this.state = {
     	isActive: false,
+    	items: this.props.data.trackers.slice(0, 40),
     }
   }
 
-  toggleContent() {
+  toggleContent = () => {
     this.props.toggleAccordion(this.props.index);
 
     const currentState = this.state.isActive;
@@ -55,9 +54,36 @@ class Accordion extends React.Component {
     });
   }
 
+  componentDidMount() {
+	  window.addEventListener('scroll', this.handleScroll);
+	}
+
+	componentWillUnmount() {
+	  window.removeEventListener('scroll', this.handleScroll);
+	}
+
+	handleScroll = (event) => {
+		if (!this.state.isActive) {
+			return;
+		}
+
+	  let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+	  const accordionContentNode = this.myRef.current;
+	  const boundingRect = accordionContentNode.getBoundingClientRect();
+	  // If the content bottom is in the viewport, we try to load more, if possible
+	  if (boundingRect.top + boundingRect.height < scrollTop + window.innerHeight &&
+	  	this.state.items.length < this.props.data.trackers.length) {
+	  	const nextIndex = this.state.items.length + 40;
+	  	this.setState({
+	  		items: this.props.data.trackers.slice(0, nextIndex),
+	  	})
+	  }
+	}
+
   render() {
+  	const itemHeight = 30;
   	const titleStyle = { backgroundImage: `url(/app/images/panel/${this.props.data.img_name}.svg)` };
-  	const contentStyle = { '--trackers-length': `${this.props.open ? (this.props.data.num_total * 25) + 30 : 0}px` };
+  	const contentStyle = { '--trackers-length': `${this.props.open ? (this.state.items.length * itemHeight) + 30 : 0}px` };
 
     return (
       <div className={"accordion accordion" + this.props.index}>
@@ -79,9 +105,9 @@ class Accordion extends React.Component {
         		<span>TRACKERS</span>
         		<span>Blocked</span>
         	</p>
-        	{this.props.data.trackers.map((tracker, index) =>
-        		<TrackerItem key={index} tracker={tracker}/>
-        	)}
+        	{this.state.items.map((tracker, index) =>
+						<TrackerItem key={index} tracker={tracker}/>
+					)}
         </div>
       </div>
     );
@@ -100,12 +126,9 @@ class Accordions extends React.Component {
     this.state = {
     	openAccordionIndex: -1,
     }
-
-    this.toggleAccordion = this.toggleAccordion.bind(this);
-    this.getOpenStatus = this.getOpenStatus.bind(this);
   }
 
-  toggleAccordion(index) {
+  toggleAccordion = (index) => {
     if(this.state.openAccordionIndex === index) {
       this.setState({ openAccordionIndex: -1 });
     } else {
@@ -113,7 +136,7 @@ class Accordions extends React.Component {
     }
   }
 
-  getOpenStatus(index) {
+  getOpenStatus = (index) => {
   	return index === this.state.openAccordionIndex;
   }
 

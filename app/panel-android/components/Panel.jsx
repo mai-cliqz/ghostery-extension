@@ -11,23 +11,23 @@ export default class Panel extends React.Component {
     	summary: {},
     	panel: {},
     	blocking: {},
+    	settings: {},
     }
-
-    this.getPanelData = this.getPanelData.bind(this);
   }
 
 	componentDidMount() {
 		this.getPanelData();
 	}
 
-	getPanelData() {
-		fetch('../../databases/mock-data.json')
+	getPanelData = () => {
+		fetch('../../databases/mock-data2.json')
 			.then(results => results.json())
 			.then(data => {
 				this.setState({
-					summary: data.data.summary,
-					panel: data.data.panel,
-					blocking: data.data.blocking,
+					summary: data.summary,
+					panel: data.panel,
+					blocking: data.blocking,
+					settings: data.settings,
 				});
 
 				console.log('@@@@', this.state);
@@ -36,6 +36,14 @@ export default class Panel extends React.Component {
 
 	get categories() {
 		return this.state.summary.categories || [];
+	}
+
+	get siteCategories() {
+		return this.state.summary.categories || [];
+	}
+
+	get globalCategories() {
+		return this.state.settings.categories || [];
 	}
 
 	render() {
@@ -50,13 +58,13 @@ export default class Panel extends React.Component {
 
 	        <Tab tabLabel={'Site Trackers'}
 	             linkClassName={'custom-link'}>
-	          <SiteTrackers categories={this.categories} />
+	          <SiteTrackers categories={this.siteCategories} />
 	          <p>tab 2 content</p>
 	        </Tab>
 
 	        <Tab tabLabel={'Global Trackers'}
 	             linkClassName={'custom-link'}>
-	          <GlobalTrackers categories={this.categories} />
+	          <GlobalTrackers categories={this.globalCategories} />
 	          <p>tab 3 content</p>
 	        </Tab>
 	      </Tabs>

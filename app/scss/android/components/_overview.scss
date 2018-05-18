@@ -77,6 +77,12 @@
 		}
 	}
 
+	.buttons-wrapper {
+		.button {
+			min-width: 150px;
+		}
+	}
+
 	.fixed-menu {
 		position: fixed;
 		bottom: 0;

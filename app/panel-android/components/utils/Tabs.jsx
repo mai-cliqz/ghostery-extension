@@ -2,12 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export class Tab extends React.Component {
-	constructor(props) {
-		super(props);
-		this.handleTabClick = this.handleTabClick.bind(this);
-	}
 
-	handleTabClick(event) {
+	handleTabClick = (event) => {
 		event.preventDefault();
 		this.props.onClick(this.props.tabIndex);
 	}
@@ -41,11 +37,9 @@ export class Tabs extends React.Component {
 		this.state = {
 			activeTabIndex: 0
 		};
-
-		this.handleTabClick = this.handleTabClick.bind(this);
 	}
 
-	handleTabClick(tabIndex) {
+	handleTabClick = (tabIndex) => {
   	if (tabIndex === this.state.activeTabIndex) {
   		return;
   	}

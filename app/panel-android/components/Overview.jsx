@@ -82,22 +82,26 @@ export default class Overview extends React.Component {
 	      <p>{this.hostName}</p>
 	      <p>{this.nTrackersBlocked} Trackers blocked</p>
 
-	      <button
-	  			className="button"
-	  			style={{ marginRight: '5px' }}
-	  			onClick={this.props.handleClick}
-	  		>Trust Site</button>
-	  		<button
-	  			className="button"
-	  			style={{ marginRight: '5px' }}
-	  			onClick={this.props.handleClick}
-	  		>Restrict Site</button>
-	  		<button
-	  			className="button"
-	  			style={{ marginRight: '5px' }}
-	  			onClick={this.props.handleClick}
-	  		>Pause Ghostery</button>
-
+	      <div className="buttons-wrapper row">
+				  <div className="small-12 medium-4">
+				  	<button
+			  			className="button trust-site-btn"
+			  			onClick={this.props.handleClick}
+			  		>Trust Site</button>
+				  </div>
+				  <div className="small-12 medium-4">
+				  	<button
+			  			className="button restrict-site-btn"
+			  			onClick={this.props.handleClick}
+			  		>Restrict Site</button>
+				  </div>
+				  <div className="small-12 medium-4">
+				  	<button
+			  			className="button pause-resume-btn"
+			  			onClick={this.props.handleClick}
+			  		>Pause Ghostery</button>
+				  </div>
+				</div>
 	  		<FixedMenu />
   		</div>
 		)
