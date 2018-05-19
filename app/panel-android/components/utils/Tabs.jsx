@@ -35,7 +35,7 @@ export class Tabs extends React.Component {
 		super(props);
 
 		this.state = {
-			activeTabIndex: 0
+			activeTabIndex: 2
 		};
 	}
 

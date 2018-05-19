@@ -43,6 +43,9 @@ class Accordion extends React.Component {
     	isActive: false,
     	items: this.props.data.trackers.slice(0, 40),
     }
+
+    this.isWaiting = false;
+    this.unMounted = false;
   }
 
   toggleContent = () => {
@@ -59,23 +62,39 @@ class Accordion extends React.Component {
 	}
 
 	componentWillUnmount() {
+		this.unMounted = true;
 	  window.removeEventListener('scroll', this.handleScroll);
 	}
 
 	handleScroll = (event) => {
-		if (!this.state.isActive) {
+		// Don't call the checkAndUpdateData function so many times. Use throttle
+		if (this.isWaiting) {
 			return;
 		}
 
-	  let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+		this.isWaiting = true;
+
+		setTimeout(() => {
+			this.isWaiting = false;
+			this.checkAndUpdateData();
+		}, 200);
+	}
+
+	checkAndUpdateData = () => {
+		if (this.unMounted || !this.state.isActive || this.state.items.length >= this.props.data.trackers.length) {
+			return;
+		}
+
+		const needToUpdateHeight = 40 * 30; // Update even before the bottom is visible
+		const nExtraItems = 40;
+
+	  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 	  const accordionContentNode = this.myRef.current;
 	  const boundingRect = accordionContentNode.getBoundingClientRect();
-	  // If the content bottom is in the viewport, we try to load more, if possible
-	  if (boundingRect.top + boundingRect.height < scrollTop + window.innerHeight &&
-	  	this.state.items.length < this.props.data.trackers.length) {
-	  	const nextIndex = this.state.items.length + 40;
+	  // Try lo load more when needed
+	  if (scrollTop + window.innerHeight - (accordionContentNode.offsetTop + boundingRect.height) > -needToUpdateHeight) {
 	  	this.setState({
-	  		items: this.props.data.trackers.slice(0, nextIndex),
+	  		items: this.props.data.trackers.slice(0, this.state.items.length + nExtraItems),
 	  	})
 	  }
 	}
@@ -105,9 +124,11 @@ class Accordion extends React.Component {
         		<span>TRACKERS</span>
         		<span>Blocked</span>
         	</p>
+        	<ul className="trackers-list">
         	{this.state.items.map((tracker, index) =>
-						<TrackerItem key={index} tracker={tracker}/>
+						<li key={index}><TrackerItem tracker={tracker}/></li>
 					)}
+					</ul>
         </div>
       </div>
     );
