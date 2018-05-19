@@ -30,7 +30,7 @@ export default class Panel extends React.Component {
 					settings: data.settings,
 				});
 
-				console.log('@@@@', this.state);
+				// console.log('@@@@', this.state);
 			});
 	}
 
@@ -53,19 +53,16 @@ export default class Panel extends React.Component {
 	        <Tab tabLabel={'Overview'}
 	             linkClassName={'custom-link'}>
 	          <Overview summary={this.state.summary} />
-	          <p>tab 1 content</p>
 	        </Tab>
 
 	        <Tab tabLabel={'Site Trackers'}
 	             linkClassName={'custom-link'}>
 	          <SiteTrackers categories={this.siteCategories} />
-	          <p>tab 2 content</p>
 	        </Tab>
 
 	        <Tab tabLabel={'Global Trackers'}
 	             linkClassName={'custom-link'}>
 	          <GlobalTrackers categories={this.globalCategories} />
-	          <p>tab 3 content</p>
 	        </Tab>
 	      </Tabs>
 			</div>

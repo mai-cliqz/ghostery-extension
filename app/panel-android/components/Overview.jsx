@@ -4,16 +4,6 @@ import TrackersChart from './utils/TrackersChart';
 import FixedMenu from './utils/FixedMenu';
 
 export default class Overview extends React.Component {
-	constructor(props) {
-    super(props);
-
-    this.state = {
-    	config: {
-    		radius: 100,
-    	}
-    }
-  }
-
 	fromTrackersToChartData(trackers) {
 		if (trackers.length < 1) {
 			return {
@@ -77,7 +67,6 @@ export default class Overview extends React.Component {
 			<div className="overview">
 				<TrackersChart
 	      	paths={this.chartData.arcs}
-	      	radius={this.state.config.radius}
 	      	num={this.chartData.sum}
 	      />
 	      <p>{this.hostName}</p>

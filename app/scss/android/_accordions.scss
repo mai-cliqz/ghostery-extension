@@ -24,8 +24,12 @@
 		  	bottom: 10px;
         content:'⌃';
         display: inline-block;
-        transform: rotate(180deg);
         font-size: 16px;
+        // transform: rotate(180deg);
+        @include prefix('transform', 'scaleY(-1)'); // This may not work on IE
+      	// -ms-filter: fliph; /*IE*/
+    		// filter: fliph; /*IE*/
+        @include prefix('transition', 'transform 200ms ease-in');
 	    }
 
 	    &.active {
@@ -77,8 +81,8 @@
 				  .menu {
 				  	position: absolute;
 				  	top: 0;
-				  	right: -120px;
-				  	width: 120px;
+				  	right: calc(-3 * #{$tracker-menu-item-width});
+				  	width: calc(3 * #{$tracker-menu-item-width});
 				  	@include prefix('transition', 'right 300ms ease-in');
 				  	height: 30px;
 				  	z-index: 1;
@@ -86,7 +90,7 @@
 
 				  	.trackerOption {
 				  		height: 100%;
-				  		width: 40px;
+				  		width: $tracker-menu-item-width;
 
 				  		&.trust {
 				  			background-color: green;

@@ -16,7 +16,7 @@ class Path extends React.Component {
 	  };
 	}
 
-	describeArc(x, y, radius, startAngle, endAngle){
+	describeArc(x, y, radius, startAngle, endAngle) {
 		const start = this.polarToCartesian(x, y, radius, startAngle);
     const end = this.polarToCartesian(x, y, radius, endAngle);
 
@@ -110,12 +110,18 @@ SVG.propTypes = {
 class TrackersChart extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+    	config: {
+    		radius: 100,
+    	}
+    }
 	}
 
 	render() {
 		return (
 			<div className="trackers-chart">
-		    <SVG paths={this.props.paths} radius={this.props.radius} />
+		    <SVG paths={this.props.paths} radius={this.state.config.radius} />
 		    <p className="trackers-num">
 					<span>{this.props.num}</span> <span>Trackers found</span>
 				</p>
@@ -126,7 +132,6 @@ class TrackersChart extends React.Component {
 
 TrackersChart.propTypes = {
 	paths: PropTypes.array,
-	radius: PropTypes.number,
 	num: PropTypes.number,
 };
 
