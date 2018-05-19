@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Accordions from './utils/Accordions';
 
 export default class SiteTrackers extends React.Component {
@@ -15,3 +16,7 @@ export default class SiteTrackers extends React.Component {
 		)
 	}
 }
+
+SiteTrackers.propTypes = {
+	categories: PropTypes.array,
+};

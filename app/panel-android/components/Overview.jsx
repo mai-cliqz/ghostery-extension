@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TrackersChart from './utils/TrackersChart';
 import FixedMenu from './utils/FixedMenu';
 
@@ -107,3 +108,8 @@ export default class Overview extends React.Component {
 		)
 	}
 }
+
+Overview.propTypes = {
+	summary: PropTypes.object,
+	handleClick: PropTypes.func,
+};

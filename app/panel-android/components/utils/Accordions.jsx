@@ -11,15 +11,12 @@ class TrackerItem extends React.Component {
   }
 
 	toggleMenu = () => {
-		const currentState = this.state.showMenu;
-		this.setState({
-			showMenu: !currentState,
-		});
+		this.props.toggleMenu(this.props.index);
 	}
 
 	render() {
 		return (
-			<div className={`tracker ${this.state.showMenu ? 'show-menu' : ''}`}>
+			<div className={`tracker ${this.props.showMenu ? 'show-menu' : ''}`}>
   			<a className="info" href={'#'}></a>
   			<div onClick={this.toggleMenu} className="trackerName">{this.props.tracker.name}</div>
 
@@ -34,6 +31,13 @@ class TrackerItem extends React.Component {
 	}
 }
 
+TrackerItem.propTypes = {
+	toggleMenu: PropTypes.func,
+	index: PropTypes.number,
+	showMenu: PropTypes.bool,
+	tracker: PropTypes.object,
+};
+
 class Accordion extends React.Component {
 	constructor(props) {
     super(props);
@@ -41,6 +45,7 @@ class Accordion extends React.Component {
 
     this.state = {
     	isActive: false,
+    	openMenuIndex: -1,
     	items: this.props.data.trackers.slice(0, 40),
     }
 
@@ -99,6 +104,18 @@ class Accordion extends React.Component {
 	  }
 	}
 
+	toggleMenu = (index) => {
+    if(this.state.openMenuIndex === index) {
+      this.setState({ openMenuIndex: -1 });
+    } else {
+      this.setState({ openMenuIndex: index });
+    }
+  }
+
+	getMenuOpenStatus = (index) => {
+  	return index === this.state.openMenuIndex;
+  }
+
   render() {
   	const itemHeight = 30;
   	const titleStyle = { backgroundImage: `url(/app/images/panel/${this.props.data.img_name}.svg)` };
@@ -126,7 +143,14 @@ class Accordion extends React.Component {
         	</p>
         	<ul className="trackers-list">
         	{this.state.items.map((tracker, index) =>
-						<li key={index}><TrackerItem tracker={tracker}/></li>
+						<li key={index}>
+							<TrackerItem
+								index={index}
+								tracker={tracker}
+								showMenu={this.getMenuOpenStatus(index)}
+								toggleMenu={this.toggleMenu}
+							/>
+						</li>
 					)}
 					</ul>
         </div>
@@ -139,6 +163,7 @@ Accordion.propTypes = {
 	toggleAccordion: PropTypes.func,
 	open: PropTypes.bool,
 	data: PropTypes.object,
+	index: PropTypes.number,
 };
 
 class Accordions extends React.Component {
@@ -179,5 +204,9 @@ class Accordions extends React.Component {
     );
   }
 }
+
+Accordions.propTypes = {
+	accordions: PropTypes.array,
+};
 
 export default Accordions;

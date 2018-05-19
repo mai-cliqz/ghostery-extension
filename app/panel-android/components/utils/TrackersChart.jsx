@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Path extends React.Component {
 	constructor(props) {
@@ -55,6 +56,12 @@ class Path extends React.Component {
 	}
 }
 
+Path.propTypes = {
+	radius: PropTypes.number,
+	path: PropTypes.object,
+	handler: PropTypes.func,
+};
+
 class SVG extends React.Component {
 	constructor(props) {
 		super(props);
@@ -95,6 +102,11 @@ class SVG extends React.Component {
 	}
 }
 
+SVG.propTypes = {
+	paths: PropTypes.array,
+	radius: PropTypes.number,
+};
+
 class TrackersChart extends React.Component {
 	constructor(props) {
 		super(props);
@@ -111,5 +123,11 @@ class TrackersChart extends React.Component {
 		);
 	}
 }
+
+TrackersChart.propTypes = {
+	paths: PropTypes.array,
+	radius: PropTypes.number,
+	num: PropTypes.number,
+};
 
 export default TrackersChart;
