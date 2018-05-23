@@ -3,20 +3,49 @@ import { Tabs, Tab } from './contents/Tabs';
 import Overview from './Overview';
 import SiteTrackers from './SiteTrackers';
 import GlobalTrackers from './GlobalTrackers';
+import { getSummaryData, getSettingsData, getBlockingData } from '../actions/panelActions';
 
 export default class Panel extends React.Component {
 	constructor(props) {
     super(props);
     this.state = {
     	summary: {},
-    	panel: {},
-    	blocking: {},
     	settings: {},
+    	blocking: {},
     }
   }
 
 	componentDidMount() {
-		this.getPanelData();
+		// this.getPanelData();
+		this.setSummaryState();
+		this.setSettingsState();
+		this.setBlockingState();
+	}
+
+	setSummaryState = () => {
+		getSummaryData(4).then((data) => {
+			console.log('@@@@', data);
+			this.setState({
+				summary: data,
+			});
+		});
+	}
+
+	setSettingsState = () => {
+		getSettingsData().then((data) => {
+			console.log('@@@@', data);
+			this.setState({
+				settings: data,
+			});
+		});
+	}
+
+	setBlockingState = () => {
+		getBlockingData(4).then((data) => {
+			this.setState({
+				blocking: data,
+			});
+		});
 	}
 
 	getPanelData = () => {

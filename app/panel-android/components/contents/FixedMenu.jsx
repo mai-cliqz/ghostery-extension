@@ -64,7 +64,7 @@ export default class FixedMenu extends React.Component {
 		super(props);
 		this.state = {
 			open: false,
-			currentMenuItemText: 'Enhanced Options',
+			currentMenuItemText: this.defaultHeaderText,
 		}
 	}
 
@@ -77,12 +77,16 @@ export default class FixedMenu extends React.Component {
 
 	updateHeadeText = (text) => {
 		if (!text) {
-			text = 'Enhanced Options';
+			text = this.defaultHeaderText;
 		}
 
 		this.setState({
 			currentMenuItemText: text,
 		});
+	}
+
+	get defaultHeaderText() {
+		return 'Enhanced Options';
 	}
 
 	render() {

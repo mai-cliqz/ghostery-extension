@@ -18,14 +18,15 @@ class TrackerItem extends React.Component {
 		return (
 			<div className={`tracker ${this.props.showMenu ? 'show-menu' : ''} ${this.props.tracker.blocked ? 'blocked' : ''}`}>
   			<a className="info" href={'#'}></a>
-  			<div onClick={this.toggleMenu} className="trackerName">{this.props.tracker.name} {this.props.tracker.blocked}</div>
+  			<div onClick={this.toggleMenu} className="trackerName">{this.props.tracker.name}
+  				<span className="trackerSelect"></span>
+  			</div>
 
   			<div className="menu">
   				<button className="trackerOption trust">Trust</button>
   				<button className="trackerOption restrict">Restrict</button>
   				<button className="trackerOption block">Block</button>
   			</div>
-  			<button className="trackerSelect"></button>
   		</div>
 		);
 	}
@@ -123,7 +124,7 @@ class Accordion extends React.Component {
 
     return (
       <div className={"accordion accordion" + this.props.index}>
-      	<button className="accordionSelect"></button>
+      	<span className={`accordionSelect ${this.props.numBlocked === this.props.numTotal ? 'blocked' : ''}`}></span>
         <div className={`accordionTitle ${this.state.isActive ? 'active' : ''}`} style={titleStyle} onClick={this.toggleContent}>
         	<h2>{this.props.name}</h2>
         	<p>

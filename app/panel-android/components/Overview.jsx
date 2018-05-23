@@ -3,17 +3,41 @@ import PropTypes from 'prop-types';
 import TrackersChart from './contents/TrackersChart';
 import FixedMenu from './contents/FixedMenu';
 import { sendMessage } from '../utils/msg';
+import { addToArray, removeFromArray } from '../utils/utils';
 
 export default class Overview extends React.Component {
 	constructor(props) {
     super(props);
 
     this.state = {
-    	isPaused: false,
     	isTrusted: false,
-    	isRestricted: false,
+    	isRestricted:false,
+    	isPaused: false,
     }
   }
+
+  componentDidUpdate(oldProps) {
+    if(oldProps.summary !== this.props.summary) {
+      // This triggers an unnecessary re-render
+      this.setState({
+        isTrusted: this.isTrusted,
+	    	isRestricted: this.isRestricted,
+	    	isPaused: this.isPaused,
+      });
+    }
+  }
+
+  get isTrusted() {
+		return this.siteWhitelist.indexOf(this.pageHost) !== -1;
+	}
+
+	get isRestricted() {
+		return this.siteBlacklist.indexOf(this.pageHost) !== -1;
+	}
+
+	get isPaused() {
+		return this.summary.paused_blocking;
+	}
 
 	fromTrackersToChartData(trackers) {
 		if (trackers.length < 1) {
@@ -69,34 +93,98 @@ export default class Overview extends React.Component {
 		return this.summary.pageHost || '';
 	}
 
+	get pageHost() {
+		return this.hostName.toLowerCase().replace(/^(http[s]?:\/\/)?(www\.)?/, '');
+	}
+
 	get nTrackersBlocked() {
 		return (this.summary.trackerCounts || {}).blocked || 0;
 	}
 
+	get siteWhitelist() {
+		return this.summary.site_whitelist || [];
+	}
+
+	get siteBlacklist() {
+		return this.summary.site_blacklist || [];
+	}
+
 	handleTrustButtonClick = () => {
-		let currentState = this.state.isTrusted;
+		const currentState = this.state.isTrusted;
 		this.setState({
 			isTrusted: !currentState,
+			isRestricted: !currentState ? false : this.state.isRestricted,
+			isPaused: false,
+		});
+
+		let updatedBlacklist = this.siteBlacklist.slice(0);
+		let updatedWhitelist = this.siteWhitelist.slice(0);
+
+		if (currentState) {
+			updatedWhitelist = removeFromArray(this.siteWhitelist, this.siteWhitelist.indexOf(this.pageHost));
+		} else {
+			if (this.siteBlacklist.includes(this.pageHost)) {
+				// remove from blacklist if site is trusted
+				updatedBlacklist = removeFromArray(this.siteBlacklist, this.siteBlacklist.indexOf(this.pageHost));
+			}
+			if (!this.siteWhitelist.includes(this.pageHost)) {
+				// add to whitelist
+				updatedWhitelist = addToArray(this.siteWhitelist, this.pageHost);
+			}
+		}
+
+		sendMessage('setPanelData', {
+			site_whitelist: updatedWhitelist,
+			site_blacklist: updatedBlacklist,
+			paused_blocking: false,
 		});
 	}
 
 	handleRestrictButtonClick = () => {
-		let currentState = this.state.isRestricted;
+		const currentState = this.state.isRestricted;
 		this.setState({
 			isRestricted: !currentState,
+			isTrusted: !currentState ? false: this.state.isTrusted,
+			isPaused: false,
+		});
+
+		let updatedBlacklist = this.siteBlacklist.slice(0);
+		let updatedWhitelist = this.siteWhitelist.slice(0);
+
+		if (currentState) {
+			updatedBlacklist = removeFromArray(this.siteBlacklist, this.siteBlacklist.indexOf(this.pageHost));
+		} else {
+			if (this.siteWhitelist.includes(this.pageHost)) {
+				// remove from whitelist if site is restricted
+				updatedWhitelist = removeFromArray(this.siteWhitelist, this.siteWhitelist.indexOf(this.pageHost));
+			}
+			if (!this.siteBlacklist.includes(this.pageHost)) {
+				// add to blacklist
+				updatedBlacklist = addToArray(this.siteBlacklist, this.pageHost);
+			}
+		}
+
+		sendMessage('setPanelData', {
+			site_whitelist: updatedWhitelist,
+			site_blacklist: updatedBlacklist,
+			paused_blocking: false,
 		});
 	}
 
 	handlePauseButtonClick = () => {
-		let currentState = this.state.isPaused;
+		const currentState = this.state.isPaused;
 		this.setState({
 			isPaused: !currentState,
+		});
+
+		sendMessage('setPanelData', {
+			paused_blocking: !currentState,
 		});
 	}
 
 	render() {
 		return (
-			<div className="overview">
+			<div className={`overview ${this.state.isPaused ? 'paused' : ''}`}>
 				<TrackersChart
 	      	paths={this.chartData.arcs}
 	      	num={this.chartData.sum}

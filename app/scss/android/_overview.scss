@@ -157,4 +157,10 @@
 	}
 
 	@import 'android/utils/fixed-menu';
+
+	&.paused {
+		.trackers-chart, .trust-site-btn, .restrict-site-btn {
+			opacity: 0.3;
+		}
+	}
 }
