@@ -1,0 +1,37 @@
+.header {
+	position: relative;
+
+	.dots-menu {
+		position: absolute;
+		top: 8px;
+		right: 5px;
+		z-index: 2;
+		text-align: right;
+
+		.dots-menu-btn {
+			background-image: url('../../app/images/panel/kebab-menu.svg');
+			background-size: 4px 16px;
+			background-position: center;
+			background-repeat: no-repeat;
+			height: 16px;
+			width: 34px;
+		}
+
+		.dots-menu-content {
+			background-color: yellow;
+			display: none;
+
+			& > ul {
+				list-style: none;
+
+				& > li {
+					padding: 5px 20px;
+				}
+			}
+
+			&.opening {
+				display: block;
+			}
+		}
+	}
+}

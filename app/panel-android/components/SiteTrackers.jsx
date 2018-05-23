@@ -1,8 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Accordions from './utils/Accordions';
+import Accordions from './contents/Accordions';
+import DotsMenu from './contents/DotsMenu';
 
 export default class SiteTrackers extends React.Component {
+	actions = [
+		{
+			name: 'Block All',
+			callback: () => {
+				console.log('Block All');
+			},
+		},
+		{
+			name: 'Unblock All',
+			callback: () => {
+				console.log('Unblock All');
+			},
+		}
+	]
+
 	get categories() {
 		return this.props.categories;
 	}
@@ -10,8 +26,11 @@ export default class SiteTrackers extends React.Component {
 	render() {
 		return (
 			<div className="site-trackers">
-				<h2>Trackers on this site</h2>
-				<Accordions accordions={this.categories} />
+				<div className="header">
+					<h2>Trackers on this site</h2>
+					<DotsMenu actions={this.actions} />
+				</div>
+				<Accordions categories={this.categories} />
 			</div>
 		)
 	}

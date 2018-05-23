@@ -1,0 +1,94 @@
+.fixed-menu {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 40px;
+	background-color: #ccc;
+	@include prefix('transition', 'height 250ms cubic-bezier(0.55, 0.09, 0.68, 0.53)');
+
+	.menuHeader {
+		height: 40px;
+		background-color: yellow;
+
+		&:before {
+			content: '‾‾‾‾‾‾‾‾';
+		}
+	}
+
+	.menuContent {
+		position: relative;
+		margin: 0;
+		list-style: none;
+		height: 100%;
+
+		.menuItem {
+
+			.menuItemWrapper {
+
+				padding: 10px 5px;
+
+				.menuItemOverview {
+					display: inline-block;
+					width: calc(100% - 40px);
+				}
+
+				.switcher {
+					display: inline-block;
+					width: 24px;
+					height: 12px;
+					border-radius: 6px;
+					background-color: $cliqz-blue;
+					position: relative;
+					@include prefix('transition', 'background-color 300ms ease-in');
+
+					&:after {
+						content: ' ';
+						position: absolute;
+						top: 0;
+						left: 50%;
+						width: 12px;
+						height: 12px;
+						border-radius: 50%;
+						background-color: blue;
+						@include prefix('transition', 'left 300ms ease-in');
+					}
+
+					&:not(.active) {
+						background-color: #bbb;
+
+						&:after {
+							background-color: #aaa;
+							left: 0;
+						}
+					}
+				}
+
+				.menuItemContent {
+					position: absolute;
+					top: 0;
+					left: 100%;
+					bottom: 0;
+					width: 100%;
+					@include prefix('transition', 'left 300ms ease-in');
+					background-color: pink;
+					z-index: 1;
+
+					.close {
+						position: absolute;
+						top: 0;
+						right: 0;
+					}
+
+					&.opening {
+						left: 0;
+					}
+				}
+			}
+		}
+	}
+
+	&.opened {
+		height: 180px;
+	}
+}

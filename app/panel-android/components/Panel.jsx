@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Tab } from './utils/Tabs';
+import { Tabs, Tab } from './contents/Tabs';
 import Overview from './Overview';
 import SiteTrackers from './SiteTrackers';
 import GlobalTrackers from './GlobalTrackers';
@@ -30,12 +30,8 @@ export default class Panel extends React.Component {
 					settings: data.settings,
 				});
 
-				// console.log('@@@@', this.state);
+				console.log('@@@@', this.state);
 			});
-	}
-
-	get categories() {
-		return this.state.summary.categories || [];
 	}
 
 	get siteCategories() {

@@ -78,99 +78,83 @@
 	}
 
 	.buttons-wrapper {
+		padding-top: 20px;
+
 		.button {
-			min-width: 150px;
-		}
-	}
+			min-width: 180px;
+			background-color: $white;
 
-	.fixed-menu {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		height: 40px;
-		background-color: #ccc;
-		@include prefix('transition', 'height 250ms cubic-bezier(0.55, 0.09, 0.68, 0.53)');
+			& > span {
+				padding-left: 20px;
+				background-repeat: no-repeat;
+				background-position: left center;
+				color: $tundora;
+			}
 
-		.menuHeader {
-			height: 40px;
-			background-color: yellow;
-		}
+			&.changed {
+				& > span {
+					color: $white;
+				}
+			}
 
-		.menuContent {
-			position: relative;
-			margin: 0;
-			list-style: none;
-			height: 100%;
+			&.trust-site-btn {
 
-			.menuItem {
+				& > span {
+					background-image: buildIconTrust($button-dark-grey);
+				}
 
-				.menuItemWrapper {
+				&.changed {
+					background-color: #9ecc42;
 
-					padding: 10px 5px;
-
-					.menuItemOverview {
-						display: inline-block;
-						width: calc(100% - 40px);
+					& > span {
+						background-image: buildIconTrust($button-white);
 					}
+				}
+			}
 
-					.switcher {
-						display: inline-block;
-						width: 24px;
-						height: 12px;
-						border-radius: 6px;
-						background-color: $cliqz-blue;
-						position: relative;
-						@include prefix('transition', 'background-color 300ms ease-in');
+			&.restrict-site-btn {
 
-						&:after {
-							content: ' ';
-							position: absolute;
-							top: 0;
-							left: 50%;
-							width: 12px;
-							height: 12px;
-							border-radius: 50%;
-							background-color: blue;
-							@include prefix('transition', 'left 300ms ease-in');
-						}
+				& > span {
+					background-image: buildIconRestrict($button-dark-grey);
+				}
 
-						&:not(.active) {
-							background-color: #bbb;
+				&.changed {
+					background-color: #e74055;
 
-							&:after {
-								background-color: #aaa;
-								left: 0;
-							}
-						}
+					& > span {
+						background-image: buildIconRestrict($button-white);
 					}
+				}
+			}
 
-					.menuItemContent {
-						position: absolute;
-						top: 0;
-						left: 100%;
-						bottom: 0;
-						width: 100%;
-						@include prefix('transition', 'left 300ms ease-in');
-						background-color: pink;
-						z-index: 1;
+			&.pause-resume-btn {
 
-						.close {
-							position: absolute;
-							top: 0;
-							right: 0;
+				& > span {
+					background-image: buildIconPause($button-dark-grey);
+
+					&:last-child {
+						display: none;
+					}
+				}
+
+				&.changed {
+					background-color: $ghosty-blue;
+
+					& > span {
+						background-image: buildIconResume($button-dark-grey);
+
+						&:first-child {
+							display: none;
 						}
 
-						&.opening {
-							left: 0;
+						&:last-child {
+							display: inline-block;
 						}
 					}
 				}
 			}
 		}
-
-		&.opened {
-			height: 180px;
-		}
 	}
+
+	@import 'android/utils/fixed-menu';
 }

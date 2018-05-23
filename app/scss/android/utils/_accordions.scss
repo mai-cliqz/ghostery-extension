@@ -4,9 +4,13 @@
 
 		.accordionSelect {
 			position: absolute;
-			top: 0;
-			right: 0;
+			top: 5px;
+			right: 10px;
 			z-index: 1;
+			border: 1px solid #ccc;
+	  	width: 20px;
+	  	height: 20px;
+	  	background-color: #eee;
 		}
 
 		.accordionTitle {
@@ -18,9 +22,22 @@
 		  background-position: 5px 5px;
 		  padding-left: 30px;
 
+		  & > p {
+		  	& > span {
+		  		&.total-trackers {
+		  			color: #aaa;
+		  		}
+
+		  		&.blocked-trackers {
+		  			margin-left: 5px;
+		  			color: red;
+		  		}
+		  	}
+		  }
+
 		  &:after {
 		  	position: absolute;
-		  	right: 12px;
+		  	right: 14px;
 		  	bottom: 10px;
         content:'⌃';
         display: inline-block;
@@ -44,8 +61,10 @@
 		  @include prefix('transition', 'height 300ms ease-in');
 		  height: var(--trackers-length, 0px);
 
-		  & > p:first-child {
-		  	span {
+		  & > p {
+		  	padding: 10px 10px 10px 15px;
+
+		  	& > span {
 		  		&:last-child {
 		  			float: right;
 		  		}
@@ -62,20 +81,26 @@
 
 			  	.info {
 			  		display: inline-block;
-				  	width: 20px;
-				  	height: 20px;
-				  	background-color: yellow;
+				  	width: 36px;
+				  	height: 36px;
 				  	float: left;
+				  	background-image: url(../../app/images/panel/icon-information-tooltip.svg);
+				  	background-repeat: no-repeat;
+				  	background-position: center;
 				  }
 
 				  .trackerName {
 				  	padding: 10px 0 10px 30px;
+				  	font-style: italic;
 				  }
 
 				  .trackerSelect {
 				  	position: absolute;
 				  	top: 0;
 				  	right: 10px;
+				  	border: 1px solid #ccc;
+				  	width: 20px;
+				  	height: 20px;
 				  }
 
 				  .menu {
@@ -111,6 +136,20 @@
 
 				  	.menu {
 				  		right: 0;
+				  	}
+				  }
+
+				  &.blocked {
+
+				  	.trackerName {
+				  		text-decoration: line-through;
+				  	}
+
+				  	.trackerSelect {
+				  		border: none;
+				  		background-image: url(../../app/images/panel/blocked.png);
+				  		background-repeat: no-repeat;
+				  	background-position: center;
 				  	}
 				  }
 			  }

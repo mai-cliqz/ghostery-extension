@@ -16,16 +16,16 @@ class TrackerItem extends React.Component {
 
 	render() {
 		return (
-			<div className={`tracker ${this.props.showMenu ? 'show-menu' : ''}`}>
+			<div className={`tracker ${this.props.showMenu ? 'show-menu' : ''} ${this.props.tracker.blocked ? 'blocked' : ''}`}>
   			<a className="info" href={'#'}></a>
-  			<div onClick={this.toggleMenu} className="trackerName">{this.props.tracker.name}</div>
+  			<div onClick={this.toggleMenu} className="trackerName">{this.props.tracker.name} {this.props.tracker.blocked}</div>
 
   			<div className="menu">
   				<button className="trackerOption trust">Trust</button>
   				<button className="trackerOption restrict">Restrict</button>
   				<button className="trackerOption block">Block</button>
   			</div>
-  			<button className="trackerSelect">select</button>
+  			<button className="trackerSelect"></button>
   		</div>
 		);
 	}
@@ -46,7 +46,7 @@ class Accordion extends React.Component {
     this.state = {
     	isActive: false,
     	openMenuIndex: -1,
-    	items: this.props.data.trackers.slice(0, 40),
+    	items: this.props.trackers.slice(0, 40),
     }
 
     this.isWaiting = false;
@@ -86,7 +86,7 @@ class Accordion extends React.Component {
 	}
 
 	checkAndUpdateData = () => {
-		if (this.unMounted || !this.state.isActive || this.state.items.length >= this.props.data.trackers.length) {
+		if (this.unMounted || !this.state.isActive || this.state.items.length >= this.props.trackers.length) {
 			return;
 		}
 
@@ -99,7 +99,7 @@ class Accordion extends React.Component {
 	  // Try lo load more when needed
 	  if (scrollTop + window.innerHeight - (accordionContentNode.offsetTop + boundingRect.height) > -needToUpdateHeight) {
 	  	this.setState({
-	  		items: this.props.data.trackers.slice(0, this.state.items.length + nExtraItems),
+	  		items: this.props.trackers.slice(0, this.state.items.length + nExtraItems),
 	  	})
 	  }
 	}
@@ -117,19 +117,19 @@ class Accordion extends React.Component {
   }
 
   render() {
-  	const itemHeight = 30;
-  	const titleStyle = { backgroundImage: `url(/app/images/panel/${this.props.data.img_name}.svg)` };
+  	const itemHeight = 40;
+  	const titleStyle = { backgroundImage: `url(/app/images/panel/${this.props.logo}.svg)` };
   	const contentStyle = { '--trackers-length': `${this.props.open ? (this.state.items.length * itemHeight) + 30 : 0}px` };
 
     return (
       <div className={"accordion accordion" + this.props.index}>
-      	<button className="accordionSelect">select</button>
+      	<button className="accordionSelect"></button>
         <div className={`accordionTitle ${this.state.isActive ? 'active' : ''}`} style={titleStyle} onClick={this.toggleContent}>
-        	<h2>{this.props.data.name}</h2>
+        	<h2>{this.props.name}</h2>
         	<p>
-        		<span>{this.props.data.num_total} TRACKERS</span>
-        		{this.props.data.blocked &&
-        			<span>{this.props.data.blocked} Blocked</span>
+        		<span className="total-trackers">{this.props.numTotal} TRACKERS</span>
+        		{!!this.props.numBlocked &&
+        			<span className="blocked-trackers">{this.props.numBlocked} Blocked</span>
         		}
         	</p>
         	<p>
@@ -162,8 +162,12 @@ class Accordion extends React.Component {
 Accordion.propTypes = {
 	toggleAccordion: PropTypes.func,
 	open: PropTypes.bool,
-	data: PropTypes.object,
 	index: PropTypes.number,
+	numBlocked: PropTypes.number,
+	name: PropTypes.string,
+	numTotal: PropTypes.number,
+	logo: PropTypes.string,
+	trackers: PropTypes.array,
 };
 
 class Accordions extends React.Component {
@@ -190,11 +194,15 @@ class Accordions extends React.Component {
     return (
       <div className="accordions">
         {
-        	this.props.accordions.map((accordion, index) =>
+        	this.props.categories.map((category, index) =>
 			      <Accordion
 			      	key={index}
 			      	index={index}
-			      	data={accordion}
+			      	numBlocked={category.num_blocked}
+			      	name={category.name}
+			      	numTotal={category.num_total}
+			      	logo={category.img_name}
+			      	trackers={category.trackers}
 			      	toggleAccordion={this.toggleAccordion}
 			      	open={this.getOpenStatus(index)}
 			      />
@@ -206,7 +214,7 @@ class Accordions extends React.Component {
 }
 
 Accordions.propTypes = {
-	accordions: PropTypes.array,
+	categories: PropTypes.array,
 };
 
 export default Accordions;

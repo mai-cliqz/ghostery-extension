@@ -1,13 +1,14 @@
-@import 'android/variables';
-@import 'android/normalize';
-@import 'android/mixins';
-@import 'android/tabs';
-@import 'android/accordions';
+@import 'android/utils/variables';
+@import 'android/utils/normalize';
+@import 'android/utils/mixins';
+@import 'android/utils/tabs';
+@import 'android/utils/accordions';
+@import 'android/utils/dots-menu';
 
 #ghostery-content {
 	background-color: #ccc;
 
-	@import 'android/components/overview';
-	@import 'android/components/site-trackers';
-	@import 'android/components/global-trackers';
+	@import 'android/overview';
+	@import 'android/site-trackers';
+	@import 'android/global-trackers';
 }

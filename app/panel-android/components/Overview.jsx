@@ -1,9 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TrackersChart from './utils/TrackersChart';
-import FixedMenu from './utils/FixedMenu';
+import TrackersChart from './contents/TrackersChart';
+import FixedMenu from './contents/FixedMenu';
+import { sendMessage } from '../utils/msg';
 
 export default class Overview extends React.Component {
+	constructor(props) {
+    super(props);
+
+    this.state = {
+    	isPaused: false,
+    	isTrusted: false,
+    	isRestricted: false,
+    }
+  }
+
 	fromTrackersToChartData(trackers) {
 		if (trackers.length < 1) {
 			return {
@@ -62,6 +73,27 @@ export default class Overview extends React.Component {
 		return (this.summary.trackerCounts || {}).blocked || 0;
 	}
 
+	handleTrustButtonClick = () => {
+		let currentState = this.state.isTrusted;
+		this.setState({
+			isTrusted: !currentState,
+		});
+	}
+
+	handleRestrictButtonClick = () => {
+		let currentState = this.state.isRestricted;
+		this.setState({
+			isRestricted: !currentState,
+		});
+	}
+
+	handlePauseButtonClick = () => {
+		let currentState = this.state.isPaused;
+		this.setState({
+			isPaused: !currentState,
+		});
+	}
+
 	render() {
 		return (
 			<div className="overview">
@@ -75,21 +107,28 @@ export default class Overview extends React.Component {
 	      <div className="buttons-wrapper row">
 				  <div className="small-12 medium-4">
 				  	<button
-			  			className="button trust-site-btn"
-			  			onClick={this.props.handleClick}
-			  		>Trust Site</button>
+			  			className={`button trust-site-btn ${this.state.isTrusted ? 'changed' : ''}`}
+			  			onClick={this.handleTrustButtonClick}
+			  		>
+			  			<span>Trust Site</span>
+			  		</button>
 				  </div>
 				  <div className="small-12 medium-4">
 				  	<button
-			  			className="button restrict-site-btn"
-			  			onClick={this.props.handleClick}
-			  		>Restrict Site</button>
+			  			className={`button restrict-site-btn ${this.state.isRestricted ? 'changed' : ''}`}
+			  			onClick={this.handleRestrictButtonClick}
+			  		>
+			  			<span>Restrict Site</span>
+			  		</button>
 				  </div>
 				  <div className="small-12 medium-4">
 				  	<button
-			  			className="button pause-resume-btn"
-			  			onClick={this.props.handleClick}
-			  		>Pause Ghostery</button>
+			  			className={`button pause-resume-btn ${this.state.isPaused ? 'changed' : ''}`}
+			  			onClick={this.handlePauseButtonClick}
+			  		>
+			  			<span>Pause Ghostery</span>
+			  			<span>Resume Ghostery</span>
+			  		</button>
 				  </div>
 				</div>
 	  		<FixedMenu />
