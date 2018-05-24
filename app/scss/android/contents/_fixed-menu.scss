@@ -10,6 +10,7 @@
 	.menuHeader {
 		height: 40px;
 		background-color: yellow;
+		text-align: center;
 
 		&:before {
 			content: '‾‾‾‾‾‾‾‾';
@@ -73,6 +74,7 @@
 					@include prefix('transition', 'left 300ms ease-in');
 					background-color: pink;
 					z-index: 1;
+					text-align: center;
 
 					.close {
 						position: absolute;

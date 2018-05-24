@@ -1,9 +1,10 @@
-@import 'android/utils/variables';
-@import 'android/utils/normalize';
-@import 'android/utils/mixins';
-@import 'android/utils/tabs';
-@import 'android/utils/accordions';
-@import 'android/utils/dots-menu';
+@import 'android/contents/variables';
+@import 'android/contents/normalize';
+@import 'android/contents/mixins';
+@import 'android/contents/tabs';
+@import 'android/contents/accordions';
+@import 'android/contents/dots-menu';
+@import 'android/contents/fixed-menu';
 
 #ghostery-content {
 	background-color: #ccc;

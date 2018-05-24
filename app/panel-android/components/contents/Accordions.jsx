@@ -14,9 +14,25 @@ class TrackerItem extends React.Component {
 		this.props.toggleMenu(this.props.index);
 	}
 
+	get trackerStatus() {
+		if (this.props.tracker.ss_allowed) {
+			return 'trusted';
+		}
+
+		if (this.props.tracker.ss_blocked) {
+			return 'restricted';
+		}
+
+		if (this.props.tracker.blocked) {
+			return 'blocked';
+		}
+
+		return '';
+	}
+
 	render() {
 		return (
-			<div className={`tracker ${this.props.showMenu ? 'show-menu' : ''} ${this.props.tracker.blocked ? 'blocked' : ''}`}>
+			<div className={`tracker ${this.props.showMenu ? 'show-menu' : ''} ${this.trackerStatus}`}>
   			<a className="info" href={'#'}></a>
   			<div onClick={this.toggleMenu} className="trackerName">{this.props.tracker.name}
   				<span className="trackerSelect"></span>
@@ -117,6 +133,19 @@ class Accordion extends React.Component {
   	return index === this.state.openMenuIndex;
   }
 
+  get blockingStatus() {
+  	// TODO @mai optimize this
+  	if (this.props.trackers.some(tracker => tracker.ss_allowed || tracker.ss_blocked)) {
+  		return 'mixed';
+  	}
+
+  	if (this.props.numBlocked === this.props.numTotal) {
+  		return 'blocked';
+  	}
+
+  	return '';
+  }
+
   render() {
   	const itemHeight = 40;
   	const titleStyle = { backgroundImage: `url(/app/images/panel/${this.props.logo}.svg)` };
@@ -124,7 +153,7 @@ class Accordion extends React.Component {
 
     return (
       <div className={"accordion accordion" + this.props.index}>
-      	<span className={`accordionSelect ${this.props.numBlocked === this.props.numTotal ? 'blocked' : ''}`}></span>
+      	<span className={`accordionSelect ${this.blockingStatus}`}></span>
         <div className={`accordionTitle ${this.state.isActive ? 'active' : ''}`} style={titleStyle} onClick={this.toggleContent}>
         	<h2>{this.props.name}</h2>
         	<p>

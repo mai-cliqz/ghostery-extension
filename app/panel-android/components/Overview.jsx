@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TrackersChart from './contents/TrackersChart';
-import FixedMenu from './contents/FixedMenu';
 import { sendMessage } from '../utils/msg';
 import { addToArray, removeFromArray } from '../utils/utils';
 
@@ -14,6 +13,14 @@ export default class Overview extends React.Component {
     	isRestricted:false,
     	isPaused: false,
     }
+  }
+
+  componentDidMount() {
+  	this.setState({
+      isTrusted: this.isTrusted,
+    	isRestricted: this.isRestricted,
+    	isPaused: this.isPaused,
+    });
   }
 
   componentDidUpdate(oldProps) {
@@ -219,7 +226,6 @@ export default class Overview extends React.Component {
 			  		</button>
 				  </div>
 				</div>
-	  		<FixedMenu />
   		</div>
 		)
 	}

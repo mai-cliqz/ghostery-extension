@@ -38,7 +38,8 @@ class Path extends React.Component {
 	render() {
 		let radius = this.props.radius;
 		let start = this.props.path.start;
-		let end = this.props.path.end;
+		// Fix error for single path
+		let end = this.props.path.end === 360 ? 359.9999 : this.props.path.end;
 		let category = this.props.path.category;
 
 		const d = this.describeArc(0, 0, radius, start, end);

@@ -1,15 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { sendMessage } from '../../utils/msg';
 
 class MenuItem extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			active: true,
+			active: false,
 			opening: false,
 		};
 	}
+
+	componentDidMount() {
+  	this.setState({
+      active: this.props.active,
+    });
+  }
+
+  componentDidUpdate(oldProps) {
+    if(oldProps.active !== this.props.active) {
+      // This triggers an unnecessary re-render
+      this.setState({
+        active: this.props.active,
+      });
+    }
+  }
 
 	menuItemClicked = () => {
 		this.setState({
@@ -32,6 +48,10 @@ class MenuItem extends React.Component {
 		this.setState({
 			active: !currentState,
 		});
+
+		sendMessage('setPanelData', {
+			[`enable_${this.props.type}`]: !currentState,
+		});
 	}
 
 	render() {
@@ -52,6 +72,7 @@ class MenuItem extends React.Component {
 }
 
 MenuItem.propTypes = {
+	active: PropTypes.bool,
 	type: PropTypes.string,
 	title: PropTypes.string,
 	numData: PropTypes.number,
@@ -99,8 +120,9 @@ export default class FixedMenu extends React.Component {
 				<ul className="menuContent">
 					<li className="menuItem">
 						<MenuItem
+							active={this.props.panel.enable_anti_tracking}
 							updateHeadeText={this.updateHeadeText}
-							type={'anti-tracking'}
+							type={'anti_tracking'}
 							title={'Enhanced Anti-Tracking'}
 							numData={3}
 							headline={'Personal data points anonymized'}
@@ -109,8 +131,9 @@ export default class FixedMenu extends React.Component {
 					</li>
 					<li className="menuItem">
 						<MenuItem
+							active={this.props.panel.enable_ad_block}
 							updateHeadeText={this.updateHeadeText}
-							type={'ad-blocking'}
+							type={'ad_block'}
 							title={'Enhanced Ad Blocking'}
 							numData={4}
 							headline={'Advertisements blocked'}
@@ -119,8 +142,9 @@ export default class FixedMenu extends React.Component {
 					</li>
 					<li className="menuItem">
 						<MenuItem
+							active={this.props.panel.enable_smart_block}
 							updateHeadeText={this.updateHeadeText}
-							type={'smart-blocking'}
+							type={'smart_block'}
 							title={'Smart Blocking'}
 							numData={3}
 							headline={'Smart Blocking'}
@@ -133,3 +157,6 @@ export default class FixedMenu extends React.Component {
 	}
 }
 
+FixedMenu.propTypes = {
+	panel: PropTypes.object,
+};

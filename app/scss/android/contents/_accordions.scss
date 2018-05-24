@@ -17,6 +17,11 @@
 	  		background-repeat: no-repeat;
 	  		background-position: center;
 	  	}
+
+	  	&.mixed {
+	  		border: none;
+	  		background-color: blue;
+	  	}
 		}
 
 		.accordionTitle {
@@ -107,6 +112,18 @@
 				  	border: 1px solid #ccc;
 				  	width: 20px;
 				  	height: 20px;
+				  	background-repeat: no-repeat;
+			  		background-position: center;
+
+			  		&:before {
+						  content: " ";
+						  position: absolute;
+						  top: 1px;
+						  right: 1px;
+						  width: 18px;
+						  height: 18px;
+						  border: 1px solid #fff;
+						}
 				  }
 
 				  .menu {
@@ -153,9 +170,26 @@
 
 				  	.trackerSelect {
 				  		border: none;
-				  		background-image: url(../../app/images/panel/blocked.png);
-				  		background-repeat: no-repeat;
-				  		background-position: center;
+				  		background-image: buildIconBlock($button-white);
+				  		background-color: $button-block;
+				  	}
+				  }
+
+				  &.trusted {
+
+				  	.trackerSelect {
+				  		border: none;
+				  		background-image: buildIconTrust($button-white);
+				  		background-color: $button-trust;
+				  	}
+				  }
+
+				  &.restricted {
+
+				  	.trackerSelect {
+				  		border: none;
+				  		background-image: buildIconRestrict($button-white);
+				  		background-color: $button-restrict;
 				  	}
 				  }
 			  }

@@ -1,14 +1,19 @@
 import React from 'react';
+import URLSearchParams from 'url-search-params';
 import { Tabs, Tab } from './contents/Tabs';
 import Overview from './Overview';
+import FixedMenu from './contents/FixedMenu';
 import SiteTrackers from './SiteTrackers';
 import GlobalTrackers from './GlobalTrackers';
-import { getSummaryData, getSettingsData, getBlockingData } from '../actions/panelActions';
+import { getPanelData, getSummaryData, getSettingsData, getBlockingData } from '../actions/panelActions';
+
+// TODO: @mai reset debug and log options
 
 export default class Panel extends React.Component {
 	constructor(props) {
     super(props);
     this.state = {
+    	panel: {},
     	summary: {},
     	settings: {},
     	blocking: {},
@@ -16,15 +21,23 @@ export default class Panel extends React.Component {
   }
 
 	componentDidMount() {
-		// this.getPanelData();
-		this.setSummaryState();
+		const tabId = new URLSearchParams(window.location.search).get('tabId');
+		this.setPanelState(tabId);
+		this.setSummaryState(tabId);
 		this.setSettingsState();
-		this.setBlockingState();
+		this.setBlockingState(tabId);
 	}
 
-	setSummaryState = () => {
-		getSummaryData(4).then((data) => {
-			console.log('@@@@', data);
+	setPanelState = (tabId) => {
+		getPanelData(tabId).then((data) => {
+			this.setState({
+				panel: data.panel,
+			});
+		});
+	}
+
+	setSummaryState = (tabId) => {
+		getSummaryData(tabId).then((data) => {
 			this.setState({
 				summary: data,
 			});
@@ -33,34 +46,18 @@ export default class Panel extends React.Component {
 
 	setSettingsState = () => {
 		getSettingsData().then((data) => {
-			console.log('@@@@', data);
 			this.setState({
 				settings: data,
 			});
 		});
 	}
 
-	setBlockingState = () => {
-		getBlockingData(4).then((data) => {
+	setBlockingState = (tabId) => {
+		getBlockingData(tabId).then((data) => {
 			this.setState({
 				blocking: data,
 			});
 		});
-	}
-
-	getPanelData = () => {
-		fetch('../../databases/mock-data2.json')
-			.then(results => results.json())
-			.then(data => {
-				this.setState({
-					summary: data.summary,
-					panel: data.panel,
-					blocking: data.blocking,
-					settings: data.settings,
-				});
-
-				console.log('@@@@', this.state);
-			});
 	}
 
 	get siteCategories() {
@@ -78,6 +75,7 @@ export default class Panel extends React.Component {
 	        <Tab tabLabel={'Overview'}
 	             linkClassName={'custom-link'}>
 	          <Overview summary={this.state.summary} />
+	          <FixedMenu panel={this.state.panel}/>
 	        </Tab>
 
 	        <Tab tabLabel={'Site Trackers'}
