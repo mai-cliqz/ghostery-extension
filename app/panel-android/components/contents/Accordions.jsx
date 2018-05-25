@@ -1,59 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-class TrackerItem extends React.Component {
-	constructor(props) {
-    super(props);
-
-    this.state = {
-    	showMenu: false,
-    };
-  }
-
-	toggleMenu = () => {
-		this.props.toggleMenu(this.props.index);
-	}
-
-	get trackerStatus() {
-		if (this.props.tracker.ss_allowed) {
-			return 'trusted';
-		}
-
-		if (this.props.tracker.ss_blocked) {
-			return 'restricted';
-		}
-
-		if (this.props.tracker.blocked) {
-			return 'blocked';
-		}
-
-		return '';
-	}
-
-	render() {
-		return (
-			<div className={`tracker ${this.props.showMenu ? 'show-menu' : ''} ${this.trackerStatus}`}>
-  			<a className="info" href={'#'}></a>
-  			<div onClick={this.toggleMenu} className="trackerName">{this.props.tracker.name}
-  				<span className="trackerSelect"></span>
-  			</div>
-
-  			<div className="menu">
-  				<button className="trackerOption trust">Trust</button>
-  				<button className="trackerOption restrict">Restrict</button>
-  				<button className="trackerOption block">Block</button>
-  			</div>
-  		</div>
-		);
-	}
-}
-
-TrackerItem.propTypes = {
-	toggleMenu: PropTypes.func,
-	index: PropTypes.number,
-	showMenu: PropTypes.bool,
-	tracker: PropTypes.object,
-};
+import TrackerItem from './TrackerItem';
 
 class Accordion extends React.Component {
 	constructor(props) {
@@ -81,6 +29,15 @@ class Accordion extends React.Component {
 
   componentDidMount() {
 	  window.addEventListener('scroll', this.handleScroll);
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.trackers !== this.props.trackers) {
+			const currentItemsLength = this.state.items.length;
+			this.setState({
+				items: this.props.trackers.slice(0, currentItemsLength),
+			})
+		}
 	}
 
 	componentWillUnmount() {
@@ -147,9 +104,9 @@ class Accordion extends React.Component {
   }
 
   render() {
-  	const itemHeight = 40;
-  	const titleStyle = { backgroundImage: `url(/app/images/panel/${this.props.logo}.svg)` };
-  	const contentStyle = { '--trackers-length': `${this.props.open ? (this.state.items.length * itemHeight) + 30 : 0}px` };
+  	const itemHeight = 50;
+  	const titleStyle = { backgroundImage: `url(/app/images/panel-android/categories/${this.props.logo}.svg)` };
+  	const contentStyle = { '--trackers-length': `${this.props.open ? (this.state.items.length * itemHeight) + 39 : 0}px` };
 
     return (
       <div className={"accordion accordion" + this.props.index}>
@@ -179,6 +136,9 @@ class Accordion extends React.Component {
 								tracker={tracker}
 								showMenu={this.getMenuOpenStatus(index)}
 								toggleMenu={this.toggleMenu}
+								callGlobalAction={this.props.callGlobalAction}
+								categoryId={this.props.id}
+								type={this.props.type}
 							/>
 						</li>
 					)}
@@ -198,6 +158,9 @@ Accordion.propTypes = {
 	numTotal: PropTypes.number,
 	logo: PropTypes.string,
 	trackers: PropTypes.array,
+	callGlobalAction: PropTypes.func,
+	id: PropTypes.string,
+	type: PropTypes.string,
 };
 
 class Accordions extends React.Component {
@@ -235,6 +198,9 @@ class Accordions extends React.Component {
 			      	trackers={category.trackers}
 			      	toggleAccordion={this.toggleAccordion}
 			      	open={this.getOpenStatus(index)}
+			      	id={category.id}
+			      	callGlobalAction={this.props.callGlobalAction}
+			      	type={this.props.type}
 			      />
 			    )
         }
@@ -245,6 +211,8 @@ class Accordions extends React.Component {
 
 Accordions.propTypes = {
 	categories: PropTypes.array,
+	type: PropTypes.string,
+	callGlobalAction: PropTypes.func,
 };
 
 export default Accordions;

@@ -1,31 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { sendMessage } from '../../utils/msg';
 
 class MenuItem extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			active: false,
 			opening: false,
 		};
 	}
-
-	componentDidMount() {
-  	this.setState({
-      active: this.props.active,
-    });
-  }
-
-  componentDidUpdate(oldProps) {
-    if(oldProps.active !== this.props.active) {
-      // This triggers an unnecessary re-render
-      this.setState({
-        active: this.props.active,
-      });
-    }
-  }
 
 	menuItemClicked = () => {
 		this.setState({
@@ -44,13 +27,12 @@ class MenuItem extends React.Component {
 	}
 
 	switcherClicked = () => {
-		const currentState = this.state.active;
-		this.setState({
-			active: !currentState,
-		});
-
-		sendMessage('setPanelData', {
-			[`enable_${this.props.type}`]: !currentState,
+		this.props.callGlobalAction({
+			actionName: 'cliqzFeatureToggle',
+			actionData: {
+				currentState: this.props.active,
+				type: this.props.type,
+			},
 		});
 	}
 
@@ -58,13 +40,16 @@ class MenuItem extends React.Component {
 
 		return (
 			<div className="menuItemWrapper">
-				<div onClick={this.menuItemClicked} className="menuItemOverview">{this.props.title}</div>
-				<span onClick={this.switcherClicked} className={`switcher ${this.state.active ? 'active' : ''}`}></span>
+				<div onClick={this.menuItemClicked} className={`menuItemOverview ${this.props.type}`}>
+					<span>{this.props.numData}</span>
+					<span>{this.props.title}</span>
+				</div>
+				<span onClick={this.switcherClicked} className={`switcher ${this.props.active ? 'active' : ''}`}></span>
 				<div className={`menuItemContent ${this.state.opening ? 'opening' : ''}`}>
-					<p className={this.props.type}>{this.props.numData}</p>
-					<p>{this.props.headline}</p>
-					<p>{this.props.description}</p>
-					<button onClick={this.closeButtonClicked} className="close">Close</button>
+					<span className={this.props.type}>{this.props.numData}</span>
+					<p className="headline">{this.props.headline}</p>
+					<p className="description">{this.props.description}</p>
+					<button onClick={this.closeButtonClicked} className="close"></button>
 				</div>
 			</div>
 		);
@@ -78,6 +63,7 @@ MenuItem.propTypes = {
 	numData: PropTypes.number,
 	headline: PropTypes.string,
 	description: PropTypes.string,
+	callGlobalAction: PropTypes.func,
 };
 
 export default class FixedMenu extends React.Component {
@@ -127,6 +113,7 @@ export default class FixedMenu extends React.Component {
 							numData={3}
 							headline={'Personal data points anonymized'}
 							description={'Anonymize unblocked and unknown trackers for greater browsing protection.'}
+							callGlobalAction={this.props.callGlobalAction}
 						/>
 					</li>
 					<li className="menuItem">
@@ -138,6 +125,7 @@ export default class FixedMenu extends React.Component {
 							numData={4}
 							headline={'Advertisements blocked'}
 							description={'Block all advertisements on websites you visit.'}
+							callGlobalAction={this.props.callGlobalAction}
 						/>
 					</li>
 					<li className="menuItem">
@@ -149,6 +137,7 @@ export default class FixedMenu extends React.Component {
 							numData={3}
 							headline={'Smart Blocking'}
 							description={'Automatically block and unblock trackers to optimize page performance.'}
+							callGlobalAction={this.props.callGlobalAction}
 						/>
 					</li>
 				</ul>
@@ -159,4 +148,5 @@ export default class FixedMenu extends React.Component {
 
 FixedMenu.propTypes = {
 	panel: PropTypes.object,
+	callGlobalAction: PropTypes.func,
 };

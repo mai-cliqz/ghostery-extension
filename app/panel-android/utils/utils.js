@@ -19,3 +19,17 @@ export function addToArray(array, item) {
 export function removeFromArray(array, position) {
 	return array.filter((item, index) => index !== position);
 }
+
+/**
+ * Update key:value pair in immutable object and return new object.
+ * @memberOf PanelUtils
+ * @param  {Object} obj 	immutable object
+ * @param  {string} key 	property name
+ * @param  {*} 		value 	property value
+ * @return {Object}     	new object
+ */
+export function updateObject(obj, key, value) {
+	const output = {};
+	output[key] = value;
+	return Object.assign({}, obj, output);
+}

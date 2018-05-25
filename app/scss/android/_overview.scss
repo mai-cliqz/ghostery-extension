@@ -1,4 +1,5 @@
 .overview {
+	padding-top: 20px;
 	text-align: center;
 
 	.trackers-chart {
@@ -83,6 +84,7 @@
 		.button {
 			min-width: 180px;
 			background-color: $white;
+			border: 1px solid #ccc;
 
 			& > span {
 				padding-left: 20px;

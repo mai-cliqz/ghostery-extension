@@ -9,12 +9,24 @@ export default class SiteTrackers extends React.Component {
 			name: 'Block All',
 			callback: () => {
 				console.log('Block All');
+				this.props.callGlobalAction({
+					actionName: 'blockUnBlockAllSiteTrackers',
+					actionData: {
+						allBlocked: true,
+					}
+				});
 			},
 		},
 		{
 			name: 'Unblock All',
 			callback: () => {
 				console.log('Unblock All');
+				this.props.callGlobalAction({
+					actionName: 'blockUnBlockAllSiteTrackers',
+					actionData: {
+						allBlocked: false,
+					}
+				});
 			},
 		}
 	]
@@ -30,7 +42,7 @@ export default class SiteTrackers extends React.Component {
 					<h2>Trackers on this site</h2>
 					<DotsMenu actions={this.actions} />
 				</div>
-				<Accordions categories={this.categories} />
+				<Accordions type="site-trackers" categories={this.categories} callGlobalAction={this.props.callGlobalAction} />
 			</div>
 		)
 	}
@@ -38,4 +50,5 @@ export default class SiteTrackers extends React.Component {
 
 SiteTrackers.propTypes = {
 	categories: PropTypes.array,
+	callGlobalAction: PropTypes.func,
 };

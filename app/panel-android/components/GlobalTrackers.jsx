@@ -9,18 +9,30 @@ export default class GlobalTrackers extends React.Component {
 			name: 'Block All',
 			callback: () => {
 				console.log('Block All');
+				this.props.callGlobalAction({
+					actionName: 'blockUnBlockAllGlobalTrackers',
+					actionData: {
+						allBlocked: true,
+					}
+				});
 			},
 		},
 		{
 			name: 'Unblock All',
 			callback: () => {
 				console.log('Unblock All');
+				this.props.callGlobalAction({
+					actionName: 'blockUnBlockAllGlobalTrackers',
+					actionData: {
+						allBlocked: false,
+					}
+				});
 			},
 		},
 		{
 			name: 'Reset Settings',
 			callback: () => {
-				console.log('Reset Settings');
+				console.log('Reset Settings: To be implemented!');
 			},
 		}
 	]
@@ -36,7 +48,7 @@ export default class GlobalTrackers extends React.Component {
 					<h2>Global Trackers</h2>
 					<DotsMenu actions={this.actions} />
 				</div>
-				<Accordions categories={this.categories} />
+				<Accordions type="global-trackers" categories={this.categories} callGlobalAction={this.props.callGlobalAction} />
 			</div>
 		)
 	}
@@ -44,4 +56,5 @@ export default class GlobalTrackers extends React.Component {
 
 GlobalTrackers.propTypes = {
 	categories: PropTypes.array,
+	callGlobalAction: PropTypes.func,
 };

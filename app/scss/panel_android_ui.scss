@@ -7,9 +7,5 @@
 @import 'android/contents/fixed-menu';
 
 #ghostery-content {
-	background-color: #ccc;
-
 	@import 'android/overview';
-	@import 'android/site-trackers';
-	@import 'android/global-trackers';
 }
