@@ -5,15 +5,15 @@ import TrackersChart from './contents/TrackersChart';
 export default class Overview extends React.Component {
 
   get isTrusted() {
-		return this.siteWhitelist.indexOf(this.pageHost) !== -1;
+		return this.props.siteProps.isTrusted;
 	}
 
 	get isRestricted() {
-		return this.siteBlacklist.indexOf(this.pageHost) !== -1;
+		return this.props.siteProps.isRestricted;
 	}
 
 	get isPaused() {
-		return this.summary.paused_blocking;
+		return this.props.siteProps.isPaused;
 	}
 
 	fromTrackersToChartData(trackers) {
@@ -47,12 +47,8 @@ export default class Overview extends React.Component {
 		};
 	}
 
-	get summary() {
-		return this.props.summary;
-	}
-
 	get categories() {
-		return this.summary.categories || [];
+		return this.props.categories || [];
 	}
 
 	get chartData() {
@@ -67,23 +63,11 @@ export default class Overview extends React.Component {
 	}
 
 	get hostName() {
-		return this.summary.pageHost || '';
-	}
-
-	get pageHost() {
-		return this.hostName.toLowerCase().replace(/^(http[s]?:\/\/)?(www\.)?/, '');
+		return this.props.siteProps.hostName;
 	}
 
 	get nTrackersBlocked() {
-		return (this.summary.trackerCounts || {}).blocked || 0;
-	}
-
-	get siteWhitelist() {
-		return this.summary.site_whitelist || [];
-	}
-
-	get siteBlacklist() {
-		return this.summary.site_blacklist || [];
+		return this.props.siteProps.nTrackersBlocked;
 	}
 
 	handleTrustButtonClick = () => {
@@ -147,7 +131,8 @@ export default class Overview extends React.Component {
 }
 
 Overview.propTypes = {
-	summary: PropTypes.object,
+	siteProps: PropTypes.object,
 	handleClick: PropTypes.func,
 	callGlobalAction: PropTypes.func,
+	categories: PropTypes.array,
 };

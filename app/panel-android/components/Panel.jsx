@@ -8,7 +8,6 @@ import GlobalTrackers from './GlobalTrackers';
 import { getPanelData, getSummaryData, getSettingsData, getBlockingData } from '../actions/panelActions';
 import handleAllActions from '../actions/handler';
 
-// TODO: @mai reset debug and log options
 // TODO: @mai optimize large data.
 
 export default class Panel extends React.Component {
@@ -59,8 +58,6 @@ export default class Panel extends React.Component {
 			this.setState({
 				blocking: data,
 			});
-
-			console.log('@@@@@@@####', this.state);
 		});
 	}
 
@@ -75,7 +72,6 @@ export default class Panel extends React.Component {
 	callGlobalAction = ({ actionName, actionData = {} }) => {
 		const { view, updated } = handleAllActions({ actionName, actionData, currentState: this.state });
 		if (view) {
-			console.log('@@@@', view, updated);
 			this.setGlobalState({ view, updated });
 		}
 	}
@@ -88,24 +84,40 @@ export default class Panel extends React.Component {
 		return this.state.settings.categories || [];
 	}
 
+	get siteProps() {
+		const hostName = this.state.summary.pageHost || '';
+		const pageHost = hostName.toLowerCase().replace(/^(http[s]?:\/\/)?(www\.)?/, '');
+
+		const siteWhitelist = this.state.summary.site_whitelist || [];
+		const siteBlacklist = this.state.summary.site_blacklist || [];
+
+		const isTrusted = siteWhitelist.indexOf(pageHost) !== -1;
+		const isRestricted = siteBlacklist.indexOf(pageHost) !== -1;
+		const isPaused = this.state.summary.paused_blocking;
+
+		const nTrackersBlocked = (this.state.summary.trackerCounts || {}).blocked || 0;
+
+		return { hostName, pageHost, isTrusted, isRestricted, isPaused, nTrackersBlocked };
+	}
+
 	render() {
 		return (
 			<div>
 				<Tabs>
 	        <Tab tabLabel={'Overview'}
 	             linkClassName={'custom-link'}>
-	          <Overview summary={this.state.summary} callGlobalAction={this.callGlobalAction} />
+	          <Overview callGlobalAction={this.callGlobalAction} categories={this.siteCategories} siteProps={this.siteProps} />
 	          <FixedMenu panel={this.state.panel} callGlobalAction={this.callGlobalAction} />
 	        </Tab>
 
 	        <Tab tabLabel={'Site Trackers'}
 	             linkClassName={'custom-link'}>
-	          <SiteTrackers categories={this.siteCategories} callGlobalAction={this.callGlobalAction} />
+	          <SiteTrackers categories={this.siteCategories} callGlobalAction={this.callGlobalAction} siteProps={this.siteProps} />
 	        </Tab>
 
 	        <Tab tabLabel={'Global Trackers'}
 	             linkClassName={'custom-link'}>
-	          <GlobalTrackers categories={this.globalCategories} callGlobalAction={this.callGlobalAction} />
+	          <GlobalTrackers categories={this.globalCategories} callGlobalAction={this.callGlobalAction} siteProps={this.siteProps} />
 	        </Tab>
 	      </Tabs>
 			</div>

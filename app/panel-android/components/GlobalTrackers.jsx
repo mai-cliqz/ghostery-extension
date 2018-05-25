@@ -48,7 +48,7 @@ export default class GlobalTrackers extends React.Component {
 					<h2>Global Trackers</h2>
 					<DotsMenu actions={this.actions} />
 				</div>
-				<Accordions type="global-trackers" categories={this.categories} callGlobalAction={this.props.callGlobalAction} />
+				<Accordions type="global-trackers" categories={this.categories} callGlobalAction={this.props.callGlobalAction} siteProps={this.props.siteProps} />
 			</div>
 		)
 	}
@@ -57,4 +57,5 @@ export default class GlobalTrackers extends React.Component {
 GlobalTrackers.propTypes = {
 	categories: PropTypes.array,
 	callGlobalAction: PropTypes.func,
+	siteProps: PropTypes.object,
 };

@@ -31,10 +31,6 @@ export default class SiteTrackers extends React.Component {
 		}
 	]
 
-	get categories() {
-		return this.props.categories;
-	}
-
 	render() {
 		return (
 			<div className="site-trackers">
@@ -42,7 +38,7 @@ export default class SiteTrackers extends React.Component {
 					<h2>Trackers on this site</h2>
 					<DotsMenu actions={this.actions} />
 				</div>
-				<Accordions type="site-trackers" categories={this.categories} callGlobalAction={this.props.callGlobalAction} />
+				<Accordions type="site-trackers" categories={this.props.categories} callGlobalAction={this.props.callGlobalAction} siteProps={this.props.siteProps} />
 			</div>
 		)
 	}
@@ -51,4 +47,5 @@ export default class SiteTrackers extends React.Component {
 SiteTrackers.propTypes = {
 	categories: PropTypes.array,
 	callGlobalAction: PropTypes.func,
+	siteProps: PropTypes.object,
 };

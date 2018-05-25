@@ -99,4 +99,5 @@ TrackerItem.propTypes = {
 	callGlobalAction: PropTypes.func,
 	categoryId: PropTypes.string,
 	type: PropTypes.string,
+	siteProps: PropTypes.object,
 };

@@ -139,6 +139,7 @@ class Accordion extends React.Component {
 								callGlobalAction={this.props.callGlobalAction}
 								categoryId={this.props.id}
 								type={this.props.type}
+								siteProps={this.props.siteProps}
 							/>
 						</li>
 					)}
@@ -161,6 +162,7 @@ Accordion.propTypes = {
 	callGlobalAction: PropTypes.func,
 	id: PropTypes.string,
 	type: PropTypes.string,
+	siteProps: PropTypes.object,
 };
 
 class Accordions extends React.Component {
@@ -201,6 +203,7 @@ class Accordions extends React.Component {
 			      	id={category.id}
 			      	callGlobalAction={this.props.callGlobalAction}
 			      	type={this.props.type}
+			      	siteProps={this.props.siteProps}
 			      />
 			    )
         }
@@ -213,6 +216,7 @@ Accordions.propTypes = {
 	categories: PropTypes.array,
 	type: PropTypes.string,
 	callGlobalAction: PropTypes.func,
+	siteProps: PropTypes.object,
 };
 
 export default Accordions;
